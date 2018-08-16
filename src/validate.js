@@ -1,9 +1,14 @@
 import toPath from "lodash.topath";
 import Ajv from "ajv";
 const ajv = new Ajv({
+  schemaId: "id",
   errorDataPath: "property",
   allErrors: true,
 });
+
+// we use draft 4 lol
+ajv.addMetaSchema(require("ajv/lib/refs/json-schema-draft-04.json"));
+
 // add custom formats
 ajv.addFormat(
   "data-url",
