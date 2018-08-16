@@ -1,6 +1,7 @@
 import toPath from "lodash.topath";
 import Ajv from "ajv";
 const ajv = new Ajv({
+  removeAdditional: "all",
   schemaId: "id",
   errorDataPath: "property",
   allErrors: true,
