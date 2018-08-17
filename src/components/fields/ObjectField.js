@@ -7,7 +7,7 @@ import {
   getDefaultRegistry,
 } from "../../utils";
 
-function DefaultObjectFieldTemplate(props) {
+export function DefaultObjectFieldTemplate(props) {
   const { TitleField, DescriptionField } = props;
   return (
     <fieldset>
