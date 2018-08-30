@@ -1,5 +1,7 @@
 import toPath from "lodash.topath";
 import Ajv from "ajv";
+
+// JG - useDefaults + removeAdditional
 const ajv = new Ajv({
   removeAdditional: "all",
   useDefaults: true,

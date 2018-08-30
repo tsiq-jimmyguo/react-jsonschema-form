@@ -14,6 +14,7 @@ function CheckboxWidget(props) {
     autofocus,
     onChange,
   } = props;
+
   return (
     <div className={`checkbox ${disabled || readonly ? "disabled" : ""}`}>
       {schema.description && (

@@ -148,6 +148,10 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
         return acc;
       }, {});
 
+    case "boolean":
+      // JG - default booleans to false, not 'undefined'
+      return defaults || false;
+
     case "array":
       if (schema.minItems) {
         if (!isMultiSelect(schema, definitions)) {
@@ -167,6 +171,9 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
           return [];
         }
       }
+
+      // JG - array schemas with 0 items should be [], not 'undefined'
+      return [];
   }
   return defaults;
 }
