@@ -166,6 +166,9 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
             // then fill up the rest with either the item default or empty, up to minItems
 
             return defaultEntries.concat(fillerEntries);
+          } else {
+            // otherwise dynamic schema will complain the array is too short
+            return defaults;
           }
         } else {
           return [];
