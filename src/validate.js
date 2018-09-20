@@ -7,6 +7,7 @@ const ajv = new Ajv({
   useDefaults: true,
   errorDataPath: "property",
   allErrors: true,
+  multipleOfPrecision: 8,
 });
 
 // add custom formats
