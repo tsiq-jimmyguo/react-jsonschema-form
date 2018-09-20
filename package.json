@@ -41,6 +41,7 @@
     "react": ">=15"
   },
   "dependencies": {
+    "@types/react-jsonschema-form": "^1.0.9",
     "ajv": "^5.2.3",
     "babel-runtime": "^6.26.0",
     "core-js": "^2.5.7",
