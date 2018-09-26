@@ -158,11 +158,15 @@ function computeDefaults(schema, parentDefaults, definitions = {}) {
           const defaultsLength = defaults ? defaults.length : 0;
           if (schema.minItems > defaultsLength) {
             const defaultEntries = defaults || [];
+
+            if (!schema.items) {
+              return defaultEntries;
+            }
+
             // populate the array with the defaults
             const fillerEntries = fill(
               new Array(schema.minItems - defaultsLength),
-              // JG - schema.items.defaults is invalid, replace with undefined
-              computeDefaults(schema.items, undefined, definitions)
+              computeDefaults(schema.items, schema.items.defaults, definitions)
             );
             // then fill up the rest with either the item default or empty, up to minItems
 
