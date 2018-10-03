@@ -106,19 +106,26 @@ function DefaultTemplate(props) {
     hidden,
     required,
     displayLabel,
+    schema,
   } = props;
   if (hidden) {
     return children;
   }
 
+  // don't wrap field containers in divs
+  const Container =
+    schema.type === "array" || schema.type === "object"
+      ? React.Fragment
+      : "div";
+
   return (
-    <div className={classNames}>
+    <Container className={classNames}>
       {displayLabel && <Label label={label} required={required} id={id} />}
       {displayLabel && description ? description : null}
       {children}
       {errors}
       {help}
-    </div>
+    </Container>
   );
 }
 
