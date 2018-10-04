@@ -97,7 +97,6 @@ function ErrorList(props) {
 function DefaultTemplate(props) {
   const {
     id,
-    classNames,
     label,
     children,
     errors,
@@ -119,7 +118,7 @@ function DefaultTemplate(props) {
       : "div";
 
   return (
-    <Container className={classNames}>
+    <Container>
       {displayLabel && <Label label={label} required={required} id={id} />}
       {displayLabel && description ? description : null}
       {children}
@@ -225,7 +224,6 @@ function SchemaFieldRender(props) {
     />
   );
 
-  const { type } = schema;
   const id = idSchema.$id;
   const label =
     uiSchema["ui:title"] || props.schema.title || schema.title || name;
@@ -236,15 +234,6 @@ function SchemaFieldRender(props) {
   const errors = __errors;
   const help = uiSchema["ui:help"];
   const hidden = uiSchema["ui:widget"] === "hidden";
-  const classNames = [
-    "form-group",
-    "field",
-    `field-${type}`,
-    errors && errors.length > 0 ? "field-error has-error has-danger" : "",
-    uiSchema.classNames,
-  ]
-    .join(" ")
-    .trim();
 
   const fieldProps = {
     description: (
@@ -266,7 +255,6 @@ function SchemaFieldRender(props) {
     disabled,
     readonly,
     displayLabel,
-    classNames,
     formContext,
     fields,
     schema,
