@@ -38,9 +38,7 @@
     "node": ">=6"
   },
   "peerDependencies": {
-    "@types/json-schema": "7.0.1",
-    "@types/react-jsonschema-form": "1.0.9",
-    "react": ">=16"
+    "react": "16.5.2"
   },
   "dependencies": {
     "ajv": "^5.2.3",
