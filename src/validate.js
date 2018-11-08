@@ -3,6 +3,7 @@ import Ajv from "ajv";
 
 // JG - useDefaults + removeAdditional
 const ajv = new Ajv({
+  uniqueItems: false,
   removeAdditional: "all",
   useDefaults: true,
   errorDataPath: "property",
