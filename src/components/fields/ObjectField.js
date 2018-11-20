@@ -66,10 +66,7 @@ class ObjectField extends Component {
   render() {
     const {
       uiSchema,
-      formData = (schema.properties || {}).reduce(
-        (acc, property) => (acc[property] = undefined),
-        {}
-      ),
+      formData,
       errorSchema,
       idSchema,
       name,
