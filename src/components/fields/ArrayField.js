@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import includes from "core-js/library/fn/array/includes";
-
+import BooleanField from "./BooleanField";
 import UnsupportedField from "./UnsupportedField";
+
 import {
   getWidget,
   getDefaultFormState,
@@ -10,6 +11,7 @@ import {
   isMultiSelect,
   isFilesArray,
   isFixedItems,
+  isForm,
   allowAdditionalItems,
   optionsList,
   retrieveSchema,
@@ -326,7 +328,9 @@ class ArrayField extends Component {
   };
 
   render() {
-    const {
+    let {
+      onChange,
+      formData,
       schema,
       uiSchema,
       idSchema,
@@ -342,21 +346,64 @@ class ArrayField extends Component {
         />
       );
     }
-    if (isFixedItems(schema)) {
-      return this.renderFixedArray();
+
+    if (isForm(schema)) {
+      let isFormWithoutItems = !schema.items;
+
+      let isDefinedForm =
+        Array.isArray(schema.items) &&
+        schema.items[0] &&
+        schema.items[0].type === "object";
+
+      let isDefinedFormWithEmptyProperties =
+        isDefinedForm && !Object.keys(schema.items[0].properties).length;
+
+      let isDefinedFormWithNonEmptyProperties =
+        isDefinedForm && Object.keys(schema.items[0].properties).length;
+
+      if (isFormWithoutItems || isDefinedFormWithEmptyProperties) {
+        schema = {
+          title: schema.title,
+          type: "boolean",
+        };
+
+        return (
+          <BooleanField
+            {...this.props}
+            formData={formData && !!formData.length}
+            schema={schema}
+            onChange={value => {
+              onChange(value ? [{}] : []);
+            }}
+          />
+        );
+      }
+
+      if (isDefinedFormWithNonEmptyProperties) {
+        schema = {
+          ...schema,
+          items: schema.items[0],
+        };
+
+        delete schema.additionalItems;
+      }
     }
+
+    if (isFixedItems(schema)) {
+      return this.renderFixedArray(schema);
+    }
+
     if (isFilesArray(schema, uiSchema, definitions)) {
-      return this.renderFiles();
+      return this.renderFiles(schema);
     }
     if (isMultiSelect(schema, definitions)) {
-      return this.renderMultiSelect();
+      return this.renderMultiSelect(schema);
     }
-    return this.renderNormalArray();
+    return this.renderNormalArray(schema);
   }
 
-  renderNormalArray() {
+  renderNormalArray(schema) {
     const {
-      schema,
       uiSchema,
       formData,
       errorSchema,
@@ -424,9 +471,8 @@ class ArrayField extends Component {
     return <Component {...arrayProps} />;
   }
 
-  renderMultiSelect() {
+  renderMultiSelect(schema) {
     const {
-      schema,
       idSchema,
       uiSchema,
       formData,
@@ -466,9 +512,8 @@ class ArrayField extends Component {
     );
   }
 
-  renderFiles() {
+  renderFiles(schema) {
     const {
-      schema,
       uiSchema,
       idSchema,
       name,
@@ -505,9 +550,8 @@ class ArrayField extends Component {
     );
   }
 
-  renderFixedArray() {
+  renderFixedArray(schema) {
     const {
-      schema,
       uiSchema,
       formData,
       errorSchema,

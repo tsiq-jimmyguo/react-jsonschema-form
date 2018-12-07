@@ -372,6 +372,10 @@ export function isFixedItems(schema) {
   );
 }
 
+export function isForm(schema) {
+  return schema.type === "array" && schema.maxItems === 1;
+}
+
 export function allowAdditionalItems(schema) {
   if (schema.additionalItems === true) {
     console.warn("additionalItems=true is currently not supported");
