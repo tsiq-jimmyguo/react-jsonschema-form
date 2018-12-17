@@ -358,9 +358,6 @@ class ArrayField extends Component {
       let isDefinedFormWithEmptyProperties =
         isDefinedForm && !Object.keys(schema.items[0].properties).length;
 
-      let isDefinedFormWithNonEmptyProperties =
-        isDefinedForm && Object.keys(schema.items[0].properties).length;
-
       if (isFormWithoutItems || isDefinedFormWithEmptyProperties) {
         schema = {
           title: schema.title,
@@ -379,14 +376,7 @@ class ArrayField extends Component {
         );
       }
 
-      if (isDefinedFormWithNonEmptyProperties) {
-        schema = {
-          ...schema,
-          items: schema.items[0],
-        };
-
-        delete schema.additionalItems;
-      }
+      // let renderFixedArray handle forms with non-empty properties
     }
 
     if (isFixedItems(schema)) {
@@ -578,10 +568,19 @@ class ArrayField extends Component {
       ? retrieveSchema(schema.additionalItems, definitions, formData)
       : null;
 
-    if (!items || items.length < itemSchemas.length) {
-      // to make sure at least all fixed items are generated
-      items = items || [];
-      items = items.concat(new Array(itemSchemas.length - items.length));
+    if (isForm(schema)) {
+      const { minItems = 0 } = schema;
+
+      if (required && isForm(schema) && (!items || items.length < minItems)) {
+        items = items || [];
+        items = items.concat(new Array(minItems - items.length).fill());
+      }
+    } else {
+      if (!items || items.length < itemSchemas.length) {
+        // to make sure at least all fixed items are generated
+        items = items || [];
+        items = items.concat(new Array(itemSchemas.length - items.length));
+      }
     }
 
     // These are the props passed into the render function
