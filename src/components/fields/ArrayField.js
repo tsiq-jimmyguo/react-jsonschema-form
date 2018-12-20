@@ -579,7 +579,9 @@ class ArrayField extends Component {
       if (!items || items.length < itemSchemas.length) {
         // to make sure at least all fixed items are generated
         items = items || [];
-        items = items.concat(new Array(itemSchemas.length - items.length));
+        items = items.concat(
+          new Array(itemSchemas.length - items.length).fill()
+        );
       }
     }
 
