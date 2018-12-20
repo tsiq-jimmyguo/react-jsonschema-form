@@ -569,20 +569,22 @@ class ArrayField extends Component {
       ? retrieveSchema(schema.additionalItems, definitions, formData)
       : null;
 
-    if (isForm(schema)) {
-      const { minItems = 0 } = schema;
+    if (required) {
+      if (isForm(schema)) {
+        const { minItems = 0 } = schema;
 
-      if (required && isForm(schema) && (!items || items.length < minItems)) {
-        items = items || [];
-        items = items.concat(new Array(minItems - items.length).fill());
-      }
-    } else {
-      if (!items || items.length < itemSchemas.length) {
-        // to make sure at least all fixed items are generated
-        items = items || [];
-        items = items.concat(
-          new Array(itemSchemas.length - items.length).fill()
-        );
+        if (isForm(schema) && (!items || items.length < minItems)) {
+          items = items || [];
+          items = items.concat(new Array(minItems - items.length).fill());
+        }
+      } else {
+        if (!items || items.length < itemSchemas.length) {
+          // to make sure at least all fixed items are generated
+          items = items || [];
+          items = items.concat(
+            new Array(itemSchemas.length - items.length).fill()
+          );
+        }
       }
     }
 
