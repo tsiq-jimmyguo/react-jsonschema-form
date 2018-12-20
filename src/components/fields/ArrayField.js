@@ -306,12 +306,13 @@ class ArrayField extends Component {
   onChangeForIndex = index => {
     return (value, errorSchema) => {
       const { formData, onChange } = this.props;
-      const newFormData = formData.map((item, i) => {
-        // We need to treat undefined items as nulls to have validation.
-        // See https://github.com/tdegrunt/jsonschema/issues/206
-        const jsonValue = typeof value === "undefined" ? null : value;
-        return index === i ? jsonValue : item;
-      });
+
+      // We need to treat undefined items as nulls to have validation.
+      // See https://github.com/tdegrunt/jsonschema/issues/206
+      let jsonValue = value === undefined ? null : value;
+      let newFormData = formData.slice();
+      newFormData[index] = jsonValue;
+
       onChange(
         newFormData,
         errorSchema &&
